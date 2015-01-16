@@ -1,0 +1,15 @@
+<uwsgi>
+	<socket>:8011</socket>
+	<master>true</master>
+	<chdir>/home/gugugujiawei/DjangoServer/cimc2</chdir>
+	<pidfile>/var/run/nginx.pid</pidfile>
+	<processes>4</processes>
+	<pythonpath>/home/gugugujiawei/DjangoServer/cimc2/</pythonpath>
+	<module>django_wsgi</module>
+	<profiler>true</profiler>
+	<memory-report>true</memory-report>
+	<enable-threads>true</enable-threads>
+	<logdate>true</logdate>
+	<limit-as>6048</limit-as>
+	<daemonize>/home/gugugujiawei/DjangoServer/cimc2/log/django.log</daemonize>
+</uwsgi>

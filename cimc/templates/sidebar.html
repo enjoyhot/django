@@ -1,0 +1,90 @@
+{% load i18n %}
+{% load tags_active %}
+
+<style type="text/css">
+  <!--
+	.webvirtlist .mylist {
+	display: block;
+	padding: 8px 10px;
+	margin: 0 0 5px 0;
+	font-size: 14px;
+	border-radius: 3px;
+	text-decoration: none;
+	color: #777;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	cursor: pointer;
+	}
+	.webvirtlist ul {
+    padding-left: 0;
+    list-style: none;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 25px;
+	}
+	@media (min-width: 981px) {
+		.webvirtlist ul {
+			border-bottom: 0;
+			margin-bottom: 0;
+		}
+	}
+	.webvirtlist .mylist.selected {
+    color: #fff;
+    background: #4183c4;
+	}
+	
+	.webvirtlist .mylist:hover {
+		color: #777;
+		background: #eee;
+	}
+	.webvirtlist ul .mylist {
+    display: block;
+    padding: 8px 10px;
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #777;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+	}
+	-->
+</style>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="page-header">
+            <a href="{% url 'create' host_id %}" class="btn btn-sm btn-success pull-right">{% trans "New Instance" %}</a>
+            <h1><a href="{% url 'overview' host_id %}">{{ compute.name }}</a></h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="webvirtlist col-xs-12 col-sm-3">
+        <ul>
+            <li>
+                <a href="{% url 'instances' host_id %}"
+                   class="mylist {% active request "^/cimc/instance" %}">{% trans "Instances" %}</a>
+            </li>
+            <li>
+                <a href="{% url 'storages' host_id %}"
+                   class="mylist {% active request "^/cimc/storage" %}">{% trans "Storages" %}</a>
+            </li>
+            <li>
+                <a href="{% url 'networks' host_id %}"
+                   class="mylist {% active request "^/cimc/network" %}">{% trans "Networks" %}</a>
+            </li>
+            <li>
+                <a href="{% url 'interfaces' host_id %}"
+                   class="mylist {% active request "^/cimc/interface" %}">{% trans "Interfaces" %}</a>
+            </li>
+            <li>
+                <a href="{% url 'secrets' host_id %}"
+                   class="mylist {% active request "^/cimc/secrets" %}">{% trans "Secrets" %}</a>
+            </li>
+            <li>
+                <a href="{% url 'overview' host_id %}" class="mylist {% active request "^/cimc/host" %}">{% trans "Overview" %}</a>
+            </li>
+        </ul>
+    </div>

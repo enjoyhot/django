@@ -1,0 +1,128 @@
+{%extends "base.html"%} 
+
+{% load staticfiles %}
+
+{%block index-wrench%}  
+{{block.super}} 
+{%endblock%}  
+
+{%block midware-wrench%}  
+{{block.super}} 
+{%endblock%}  
+
+{%block kvm-wrench%}  
+<li>
+     <a class="active" href="{% url 'servers_list' %}"><i class="fa fa-table fa-fw"></i> KVM管理</a>
+</li> 
+{%endblock%}  
+
+{%block server-wrench%}  
+{{block.super}} 
+{%endblock%}  
+
+{%block mongo-wrench%}  
+{{block.super}} 
+{%endblock%}
+
+{%block review-wrench%}
+{{block.super}} 
+{%endblock%}
+
+           
+<!--审核日志-->  
+{%block review-log%}  
+{{block.super}} 
+{%endblock%} 
+
+{% load i18n %}
+
+<!--审核业务-->  
+{%block review%}
+    {% include 'sidebar.html' %}
+    <div class="main col-xs-12 col-sm-9">
+        {% if errors %}
+            {% for error in errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ error }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <h4>{% trans "Basic details" %}</h4>
+        <table class="table table-hover table-nolines">
+            <tbody>
+                <tr>
+                    <td>{% trans "Connection" %}</td>
+                    <td>{{ uri_conn }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "Hostname" %}</td>
+                    <td>{{ hostname }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "Hypervisor" %}</td>
+                    <td>{{ hypervisor }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "Memory" %}</td>
+                    <td>{{ host_memory|filesizeformat }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "Logical CPUs" %}</td>
+                    <td>{{ logical_cpu }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "Processor" %}</td>
+                    <td>{{ model_cpu }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "Architecture" %}</td>
+                    <td>{{ host_arch }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>{% trans "Performance" %}</h4>
+        <p>{% trans "CPU usage" %}</p>
+        <canvas id="cpuChart" width="700" height="200"></canvas>
+        <p>{% trans "Memory usage" %}</p>
+        <canvas id="memoryChart" width="700" height="200"></canvas>
+    </div>
+    {% include 'sidebar_close.html' %}
+
+<script src="{% static "js/Chart.min.js" %}"></script>
+<script>
+	var cpu_ctx = $("#cpuChart").get(0).getContext("2d");
+	var cpuChart = new Chart(cpu_ctx);
+	var cpu_options = {
+		animation: false,
+		pointDotRadius: 2,
+		scaleLabel: "<%=value%> %",
+		scaleOverride: true,
+		scaleSteps: 10,
+		scaleStepWidth: 10,
+		scaleStartValue: 0,
+		responsive: true
+	};
+
+	var mem_ctx = $("#memoryChart").get(0).getContext("2d");
+	var memChart = new Chart(mem_ctx);
+	var mem_options = {
+		animation: false,
+		pointDotRadius: 2,
+		scaleLabel: "<%=value%> Mb",
+		responsive: true
+	};
+
+	function hostusage() {
+		  $.getJSON("{% url 'hostusage' host_id %}",function(datas){	
+			cpuChart.Line(datas['cpu'], cpu_options);
+			memChart.Line(datas['memory'], mem_options);
+		});
+	}
+	$(function () {		
+		window.setInterval('hostusage()', {{ time_refresh }});
+	});
+</script>
+{% endblock %}

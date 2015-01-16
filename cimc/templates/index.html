@@ -1,0 +1,164 @@
+{%extends "base.html"%} 
+
+{%block midware-wrench%}  
+{{block.super}} 
+{%endblock%}  
+
+{%block review-wrench%}  
+{{block.super}} 
+{%endblock%}  
+
+{%block kvm-wrench%}  
+{{block.super}} 
+{%endblock%}  
+
+{%block server-wrench%}  
+{{block.super}} 
+{%endblock%}  
+
+{%block mongo-wrench%}  
+{{block.super}} 
+{%endblock%} 
+
+{%block index-wrench%}  
+<li>
+    <a class="active" href="{% url 'index' %}"><i class="fa fa-dashboard fa-fw"></i> 系统监控</a>
+</li> 
+{%endblock%} 
+
+<!--系统状态-->  
+{%block review%}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">系统状态</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>            
+<div class="row">			
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>系统状态</th>
+                                <th>主机名</th>
+                                <th>主机IP地址</th>
+                                <th>组件</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="success">
+                                <td>正常</td>
+                                <td>主机用途</td>
+                                <td>内外网</td>
+                                <td><select name="dataTables-example_length" aria-controls="dataTables-example" class="form-control input-sm"><option value="10">数据库</option><option value="25">缓存</option><option value="50">中间件</option></select></td>
+                                <td><a href="http://github.com/flot/flot/blob/master/API.md" ><font color="#FF0000">查看明细</font></a></td>                                            
+                            </tr>
+                            <tr class="warning">
+                                <td>警告</td>
+                                <td>主机用途</td>
+                                <td>内外网</td>
+                                <td><select name="dataTables-example_length" aria-controls="dataTables-example" class="form-control input-sm"><option value="10">数据库</option><option value="25">缓存</option><option value="50">中间件</option></select></td>
+                                <td><a href="http://github.com/flot/flot/blob/master/API.md" ><font color="#FF0000">查看明细</font></a></td>
+                            </tr>
+                            <tr class="danger">
+                                <td>宕机</td>
+                                <td>主机用途</td>
+                                <td>内外网</td>
+                                <td><select name="dataTables-example_length" aria-controls="dataTables-example" class="form-control input-sm"><option value="10">数据库</option><option value="25">缓存</option><option value="50">中间件</option></select></td>
+                                <td><a href="http://github.com/flot/flot/blob/master/API.md" ><font color="#FF0000">查看明细</font></a></td>
+                            </tr>
+                            <tr class="info">
+                                <td>其它</td>
+                                <td>主机用途</td>
+                                <td>内外网</td>
+                                <td><select name="dataTables-example_length" aria-controls="dataTables-example" class="form-control input-sm"><option value="10">数据库</option><option value="25">缓存</option><option value="50">中间件</option></select></td>
+                                <td><a href="http://github.com/flot/flot/blob/master/API.md" ><font color="#FF0000">查看明细</font></a></td>
+                            </tr>                                        
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+
+</div>
+<!-- /.row -->
+{%endblock%}
+
+<!--系统统计信息-->  
+{%block review-log%}
+            
+<div class="row">
+	<h1 class="page-header">系统统计信息</h1>
+    <div class="col-lg-12">                
+    	<div class="panel panel-default">     					
+        	<div class="panel" style="background-color:#CFF">
+            	<div class="panel-heading" >
+                	<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                	<font color="#000000" >用户信息管理概要</font>
+                   	<span class="fa arrow"></span>
+                    </a>
+                </div>
+                <div id="collapseOne" class="accordion-body collapse" style="height: 0px; ">
+
+               	<ul>
+               		<li>个人用户数量</li>
+                    <li>企业用户数量</li>
+                    <li>用户情况访问统计（访问量）</li>
+                    <li>在线人数</li>
+                </ul>
+
+            </div>
+        </div>
+
+  
+        <div class="panel" style="background-color:#FFC">
+            <div class="panel-heading" >
+             	<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                <font color="#000000" >中间信息管理概要</font>
+                <span class="fa arrow"></span>
+                </a>
+                </div>
+                <div id="collapseTwo" class="accordion-body collapse" style="height: 0px; ">
+                    <ul>
+                        <li>中间件数量</li>
+                        <li>待审核中间件数量</li>
+                        <li>测试中中间件数量</li>
+                        <li>使用中中间件数量</li>
+                    </ul>
+  
+                </div>
+            </div>
+
+            <div class="panel" style="background-color:#CCF">
+                <div class="panel-heading" >
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                    <font color="#000000" >系统信息管理概要</font>
+                    <span class="fa arrow"></span>
+                </a>
+                </div>
+                <div id="collapseThree" class="accordion-body collapse" style="height: 0px; ">
+
+                     <ul>
+                         <li>服务器集群数量</li>
+                         <li>网络带宽情况</li>
+                         <li>服务器安全状态</li>
+                     </ul>
+                </div>
+            </div>
+		</div>     
+          <!--panel-default-->
+	</div>              
+      <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+{%endblock%}

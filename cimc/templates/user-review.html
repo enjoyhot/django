@@ -1,0 +1,486 @@
+{%extends "base.html"%} 
+
+{%block index-wrench%}  
+{{block.super}} 
+{%endblock%}  
+
+{%block midware-wrench%}  
+{{block.super}} 
+{%endblock%}  
+
+{%block kvm-wrench%}  
+{{block.super}} 
+{%endblock%}  
+
+{%block server-wrench%}  
+{{block.super}} 
+{%endblock%}  
+
+{%block mongo-wrench%}  
+{{block.super}} 
+{%endblock%}   
+
+
+<!--审核展开-->  
+{%block review-wrench%}                      	 
+<li class="active">
+	<a href="#"><i class="fa fa-wrench fa-fw"></i> 审核业务<span class="fa arrow"></span></a>
+	<ul class="nav nav-second-level">
+		<li>
+			<a class="active" href="{% url 'user-review' %}">用户审核业务</a>
+		</li>
+		<li>
+			<a href="{% url 'device-review' %}">设备审核业务</a>                                  
+		</li>
+		<li>
+			<a href="{% url 'middleware-review' %}">中间件审核业务</a>
+		</li>
+	</ul>
+ 	<!-- /.nav-second-level -->
+</li>                    
+{%endblock%}
+
+<!--审核业务-->  
+{%block review%}                      
+<div class="row">
+	<div class="col-lg-12">
+		<h1 class="page-header">用户未审核业务</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12">    
+                
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<font size="+1">用户备案信息审核</font>
+			</div>
+            <div class="panel-body">                                               
+                <div class="table-responsive">
+                    <script type="text/javascript">
+                                                
+                        var check_list=[];
+                                            
+                        $(document).on("click","#chk_all",function(){
+                            var ischecked= $("#chk_all:checked").length;
+                            var $checkboxs =$("input[name='transPro']");
+                            if(ischecked){
+                                $checkboxs.prop("checked",true);
+                            }else{
+                                $checkboxs.prop("checked",false);							 
+                            }
+                        });
+                                                 
+                        $(document).ready(function(){
+                            $("input[name='pass']").click(function(){							     
+                                check("hidden-value");
+                            });
+                        });
+                                                 
+                        $(document).ready(function(){
+                            $("input[name='not-pass']").click(function(){
+                                check("hidden-value2");
+                            });
+                        });							 
+                                                 
+                        function check(name){
+                            check_list=[];
+                            var rowsize = document.getElementById('user-body').getElementsByTagName('tr').length;
+                            for (var i=0;i<rowsize;i++){
+                                tmp="input[value=\""+i+"\"]";
+                                tmp=tmp+":checked"
+                                var ischecked= $(tmp).length;
+                                                                    
+                                if(ischecked){										 
+                                    var td = document .getElementById ("dataTables-user").rows [i+1].cells[8].innerHTML; 
+                                    check_list.push(td);										 
+                                }
+                            }
+                            if(check_list.length){
+                                document.getElementById(name).value = check_list;
+                            }
+                        }	
+                                                 
+                        function check_submit(){
+							//alert(''+chck_list.length)
+                            if(check_list.length){									 
+                                return true;
+                            }
+                            else 
+                                return false;								 
+                        }
+                    </script>                        
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-user">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" name="transPro" id="chk_all"/><span> </span>选择</th>
+                                <th>用户名</th>                                            
+                                <th>真实姓名</th>
+                                <th>公司</th>
+                                <th>电话</th>
+                                <th>身份证</th>
+                                <th>地址</th>
+                                <th>业务类型</th> 
+                                <th style="display:none">UID</th>                                            
+                            </tr>
+                        </thead>
+
+                        {% if user %}
+                            <tbody id="user-body">
+                                <!-- 样式
+                                <tr>
+                                    <td><input type="checkbox" name="transPro" value="message1"></td>
+                                    <td>小明</td>
+                                    <td>张晓明</td>
+                                    <td>cimcssc</td>
+                                    <td>13570211111</td>
+                                    <td>444526458542546598</td>
+                                    <td>山东蓝翔</td>
+                                    <td>个人业务</td>
+                                    <td style="display:none" id="userid">UID</td>                                
+                                 </tr>
+                                 -->                                
+                                
+                                {% for u in user.object_list %}
+                                <tr id={{forloop.counter0}}>
+                                    <td><input type="checkbox" name="transPro" value={{forloop.counter0}}></td>
+                                    {% for item in u %}
+                                        {% ifequal forloop.counter0 7 %}
+                                        <td style="display:none" id="userid">{{item}}</td>   
+                                        {% else %}
+                                        <td>{{item}}</td>     
+                                        {% endifequal %}                                              
+                                    {% endfor %}										
+                                    </tr>
+                                {% endfor %}                                                                
+                                                        
+                            </tbody>
+                        {% endif %}                        
+                        
+                        
+                   </table>
+                </div>                                              
+                <div style="float:right" id="pages">                	     
+                    {%  include "pages/user.html" %}
+                </div>                
+            </div>                    
+        
+        	<div class="panel-footer">                                                                                    
+				<script type="text/javascript">
+            		$(document).on("click","#allSelect",function(){
+                		var $checkboxs =$("input[name='transPro']");
+                    	$checkboxs.prop("checked",true);
+                	});
+                                 
+                	$(document).on("click","#noneSelect",function(){
+                    	var $checkboxs =$("input[name='transPro']");
+                    	$checkboxs.prop("checked",false);
+                	});
+								 
+								 
+                </script> 
+                <form method="post" onSubmit="return check_submit()">  
+                	{% csrf_token %}							
+                    <a href="javascript:void(0)" id="allSelect" >全部</a>
+                    <a >-</a>                        
+                    <a href="javascript:void(0)" id="noneSelect" >无</a>
+                    <a >-</a>     
+                    <input type="hidden" name="content" id="hidden-value"></input>                    
+                    <input type="submit" class="btn btn-primary" name="pass" value="通过所选"></input>
+                    <input type="hidden" name="content2" id="hidden-value2"></input>
+                    <input type="submit" class="btn btn-primary" name="not-pass" value="删除所选"></input> 
+                    <p style="float:right">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增用户</button>
+                    </p>
+                </form>                           
+            </div>
+       </div>
+       <!--panel-info-->
+	</div>
+    <!--col-lg-12-->
+</div>
+      
+       
+<div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="myModal" role="dialog" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" style="background:#d9edf7">
+				<button aria-hidden="true" class="close" data-dismiss="modal" type="button">
+				×
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+				新增用户信息
+				</h4>
+			</div>                                                
+
+			<script type="text/javascript">
+
+				var url="";										
+				var message_list=[];
+				var message_item=['username','password','email','recordname','recordcode','recordtelphone','recordcompany','recordaddress','select_id']		 
+				$(document).ready(function(){
+					$("input[name='addButton']").click(function(){
+						check_message();								  								 
+					});
+				});
+							 							 
+
+				function check_message(){
+					message_list=[];
+
+					for(var i=0;i<message_item.length;i++){
+						value=document.getElementById(message_item[i]).value;									
+						if(value=='')
+							break;
+						else
+							message_list.push(value); 
+					}							 								 
+					if(message_list.length!=9){
+						alert("您输入的信息不全，请重新输入！");	
+						return;								
+					}
+					post_message();					
+				}	
+
+				function post_message(){
+					//alert('success')
+					data={'username':message_list[0],'password':message_list[1],'email':message_list[2],'recordname':message_list[3],'recordcode':message_list[4],'recordtelphone':message_list[5],'recordcompany':message_list[6],'recordaddress':message_list[7],'recordtype':message_list[8]};
+
+					$.post($(this).attr('action'), data, function(data,status,xhr){										
+						window.location.reload();
+					});
+				}
+				
+			<!--添加用户表单-->
+			</script>                         
+            <div class="modal-body form-horizontal">                        	
+                <div class="form-group">
+                    <label for="username" class="col-sm-2 control-label">用户名</label>
+                    <div class="col-sm-10">
+                    	<input type="text" class="form-control" id="username" placeholder="用户名">
+                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-sm-2 control-label">Password</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="password" placeholder="密码">
+                    </div>
+                </div>  
+                <div class="form-group">                         
+                    <label for="email" class="col-sm-2 control-label">邮箱</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="email" placeholder="邮箱"></input> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="recordname" class="col-sm-2 control-label">真实姓名</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="recordname" placeholder="真实姓名">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="recordcode" class="col-sm-2 control-label">身份证</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="recordcode" placeholder="身份证号码">
+                    </div>
+                </div>  
+                <div class="form-group">                         
+                    <label for="recordtelphone" class="col-sm-2 control-label">手机</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="recordtelphone" placeholder="手机号码"></input> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="recordcompany" class="col-sm-2 control-label">公司</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="recordcompany" placeholder="公司">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="recordaddress" class="col-sm-2 control-label">地址</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="recordaddress" placeholder="地址">
+                    </div>
+                </div>  
+                <div class="form-group">
+                    <label for="recordaddress" class="col-sm-2 control-label">业务类型</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="select_id">
+                            <option value="1">个人用户</option>
+                            <option value="2">厂商用户</option>
+                        </select>
+                    </div>
+                </div>                                                                                         
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="add-name" id="add-id"></input>
+                <button class="btn btn-default" data-dismiss="modal" type="button">关闭</button>
+                <input class="btn btn-primary" type="submit" name="addButton" value="确定"></input>
+            </div>                        	   
+		</div>
+	</div>
+</div>                    
+{%endblock%}
+
+
+<!--审核日志-->  
+{%block review-log%}
+
+<div class="row">
+	<div class="col-lg-12">
+		<h1 class="page-header">最近已审核业务日志</h1>
+	</div>
+</div>
+<div class="row">
+<!--col-lg-12-->
+	<div class="col-lg-12">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<font size="+1">已审核日志记录</font>
+			</div>
+			<div class="panel-body">
+				<div class="table-responsive">
+					<script type="text/javascript">
+    
+                        check_list2=[];	
+    
+                        <!--全选与全不选的操作（点击checkbox）-->
+                        $(document).on("click","#chk_all2",function(){
+                            var ischecked= $("#chk_all2:checked").length;
+                            var $checkboxs =$("input[name='transPro2']");
+                            if(ischecked){
+                                $checkboxs.prop("checked",true);
+                            }else{
+                                $checkboxs.prop("checked",false);							 
+                            }
+                        });
+                        <!--end-->
+        
+                        <!--恢复操作-->
+                        $(document).ready(function(){
+                            $("input[name='recover']").click(function(){
+                                check2("hidden-value3");
+                            });
+                        });							 
+    
+                        function check2(name){
+                            check_list2=[];
+                            var rowsize = document.getElementById('user-history-body').getElementsByTagName('tr').length;
+                            for (var i=0;i<rowsize;i++){
+                                tmp="input[value=\""+i+i+"\"]";
+                                tmp=tmp+":checked"
+                                var ischecked= $(tmp).length;
+                                <!--根据点击项获取UID-->		
+                                if(ischecked){		
+                                    var td = document .getElementById ("dataTables-user-history").rows [i+1].cells[8].innerHTML; 
+                                    check_list2.push(td);										 
+                                }
+                                <!--end-->
+                            }
+    
+                            <!--合法性鉴定-->
+                            if(check_list2.length){
+                                var ret = window.confirm("确定要恢复所选？");
+                                if(ret){
+                                    document.getElementById(name).value = check_list2;
+                                }
+                                else{
+                                    check_list2=[];
+                                }
+                            }
+                            <!--end-->
+                        }	
+    
+                        <!--表单提交的是否重新加载鉴定-->
+                        function check_recover(){
+                            if(check_list2.length){									 
+                                return true;
+                            }
+                            else 
+                                return false;								 
+                        }	
+                        <!--end-->						 
+                    </script>                        
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-user-history">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" name="transPro2" id="chk_all2"/><span> </span>选择</th>
+                                <th>用户名</th>                                            
+                                <th>真实姓名</th>
+                                <th>公司</th>
+                                <th>电话</th>
+                                <th>身份证</th>                                            
+                                <th>注册时间</th>
+                                <th>业务类型</th>  
+                                <th style="display:none">UID</th>
+                                <th>审核状态</th>                                              
+                            </tr>
+                        </thead>
+
+                        {% if user_review %}
+                        <tbody id="user-history-body">
+                        <!-- 样式
+                        <tr>
+                            <td><input type="checkbox" name="transPro2" value="00"></td>
+                            <td>小明</td>
+                            <td>张晓明</td>
+                            <td>公司</td>
+                            <td>电话</td>                                            
+                            <td>身份证</td>
+                            <td>注册时间</td>                                            
+                            <td>业务类型</td>  
+                            <td>审核状态</td>                                                
+                         </tr>
+                         -->
+                        {% for u in user_review.object_list %}
+                        <tr>
+                            <td><input type="checkbox" name="transPro2" value={{forloop.counter0}}{{forloop.counter0}}></td>
+                            {% for item in u %}
+                            <!--第七项为隐藏的uid-->	
+                                {% ifequal forloop.counter0 7 %}
+                                <td style="display:none">{{item}}</td>   
+                                {% else %}
+                                <td>{{item}}</td>     
+                                {% endifequal %}                                                   
+                            {% endfor %}										
+                        </tr>
+                        {% endfor %}                                        
+                        </tbody>
+                        {% endif %}                                                                          
+                    </table>
+				</div>
+                
+                <div style="float:right">       
+					{%  include "pages/user_review.html" %}
+                </div>               
+                
+			</div>
+            <div class="panel-footer">     
+                <!--全选与全不选的操作（点击文本）-->                        
+                <script type="text/javascript">
+                    $(document).on("click","#allSelect2",function(){
+                        var $checkboxs =$("input[name='transPro2']");
+                        $checkboxs.prop("checked",true);
+                    });
+            
+                    $(document).on("click","#noneSelect2",function(){
+                        var $checkboxs =$("input[name='transPro2']");
+                        $checkboxs.prop("checked",false);
+                    });
+                </script>   
+                <form method="post" onSubmit="return check_recover()">	
+                {% csrf_token %}                            						
+                    <a href="javascript:void(0)" id="allSelect2" >全部</a>
+                    <a >-</a>                        
+                    <a href="javascript:void(0)" id="noneSelect2" >无</a>
+                    <a >-</a>   
+                    <input type="hidden" name="content3" id="hidden-value3"></input>                      
+                    <input type="submit" class="btn btn-primary" name="recover" value="恢复所选"></input>           
+                    <button type="button" class="btn btn-primary">删除所选</button>
+                </form>                             
+            </div>
+
+		</div>
+	</div>
+<!--col-lg-12-->
+</div>
+{%endblock%}

@@ -1,0 +1,297 @@
+﻿{%extends "base.html"%} 
+
+{% load staticfiles %}
+
+{%block index-wrench%}  
+{{block.super}} 
+{%endblock%}  
+
+{%block midware-wrench%}  
+{{block.super}} 
+{%endblock%}  
+
+{%block kvm-wrench%}  
+{{block.super}} 
+{%endblock%}  
+
+{%block server-wrench%}  
+<li>
+    <a class="active" href="{% url 'server-info' %}"><i class="fa fa-edit fa-fw"></i>服务器信息概要</a>
+</li>  
+{%endblock%}  
+
+{%block mongo-wrench%}  
+{{block.super}} 
+{%endblock%}   
+
+
+<!--审核展开-->  
+{%block review-wrench%}                      	 
+{{block.super}}                    
+{%endblock%}
+
+<!--审核业务-->  
+{%block review%}
+        
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">服务器状态</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>            
+<div class="row">			
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                本机服务器信息
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <!-- Nav tabs -->
+                <ul class="nav nav-pills">
+                    <li class="active"><a href="#network-pills" data-toggle="tab">服务器网络信息</a>
+                    </li>
+                    <li><a href="#messages-pills" data-toggle="tab">服务器类型</a>
+                    </li>
+                    <li><a href="#cpumem-pills" data-toggle="tab">CPU及内存</a>
+                    </li>
+                    <li><a href="#load-pills" data-toggle="tab">系统负载监测</a>
+                    </li>                                                    
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="network-pills">
+                    	<br>
+                        {% if networkmsg %}
+                                <p style="text-indent: 2em">服务器网卡地址:	<span>{{networkmsg.mac}}</span></p>
+                                <p style="text-indent: 2em">服务器签名:	<span>{{networkmsg.server_name}}</span></p>
+                                <p style="text-indent: 2em">服务器ip地址:	<span>{{networkmsg.ip}}</span></p>                               
+                        {% endif %}    
+                    </div>                
+                    <div class="tab-pane fade" id="messages-pills">
+                    	<br>
+                        {% if versionmsg %}
+                                <p style="text-indent: 2em">内核版本:	<span>{{versionmsg.version}}</span></p>
+                                <p style="text-indent: 2em">服务器签名:	<span>{{versionmsg.server_name}}</span></p>
+                                <p style="text-indent: 2em">版本号:	<span>{{versionmsg.versionid}}</span></p>                               
+                        {% endif %}
+                    </div>
+                    <div class="tab-pane fade" id="cpumem-pills">
+                    	<br>
+<!--                        {% if meminfo %}
+                                <p style="text-indent: 2em">Total Mem:	<span>{{meminfo.total}}</span></p>
+                                <p style="text-indent: 2em">Free Mem:	<span>{{meminfo.free}}</span></p>                                                              
+                        {% endif %}-->
+                        <legend>内存使用率</legend>
+                        <canvas id="memoryChart" width="700" height="200"></canvas>
+                        <legend>CPU使用率</legend>
+                        <canvas id="cpuChart" width="700" height="200"></canvas>
+                    </div>
+                    <div class="tab-pane fade" id="load-pills">
+                    	<br>
+                        {% if loadavg %}
+                                <p style="text-indent: 2em">每15分钟平均负载:	<span>{{loadavg.lavg_15}}</span></p>
+                                <p style="text-indent: 2em">队列任务/活跃任务:	<span>{{loadavg.rate}}</span></p>
+                                <p style="text-indent: 2em">系统最大的pid值:	<span>{{loadavg.last_pid}}</span></p>                               
+                        {% endif %}                       
+                    </div>                                                 
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel-default --> 
+    </div>
+
+</div>
+
+
+<!-- /.row -->        
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                其他系统网络状态          
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+            {% if ip_con %}
+            	{% for item in ip_con %}
+                <div class="alert alert-success" id="div{{forloop.counter0}}">
+                <button type="button" class="close" data-dismiss="alert" onclick="return deleteip('{{item.ip}}')">×</button>
+                <table>
+                    <tr>
+                        <td><font size="4">IP:</font></th>                                            
+                        <td><font size="4" id=ip{{forloop.counter0}}>{{item.ip}}</font></th>                                            
+                    </tr>
+                    <tr>
+                        <td><h2>状态：</h2></th>                                               
+                        <td><h2 id={{forloop.counter0}}></h2></th>                                         
+                    </tr>   
+                </table>                                    
+                </div>
+                {% endfor %}
+            {% endif %}
+            </div>
+            <!-- .panel-body -->
+            <div class="panel-footer">
+            <div align="right">
+	            <form method="post">  
+                    <button type="button" class="btn btn-primary" id='refresh'>刷新</button>              	
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newsys">新增服务器</button>   
+                </form>             
+            </div>
+            </div>
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="newsys" role="dialog" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" style="background:#d9edf7">
+				<button aria-hidden="true" class="close" data-dismiss="modal" type="button">
+				×
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+				新增服务器监测
+				</h4>
+			</div>                                                
+
+			<script type="text/javascript">
+
+				var url="";										
+				var message_list=[];
+				var message_item=['ip']		 
+				$(document).ready(function(){
+					$("input[name='addButton']").click(function(){
+						check_message();								  								 
+					});
+				});
+							 							 
+
+				function check_message(){
+					message_list=[];
+
+					for(var i=0;i<message_item.length;i++){
+						value=document.getElementById('input-ip').value;									
+						if(value=='')
+							break;
+						else
+							message_list.push(value); 
+					}							 								 
+					if(message_list.length!=1){
+						alert("您输入的信息不全，请重新输入！");	
+						return;								
+					}
+					post_message();					
+				}	
+
+				function post_message(){
+					//alert('success')
+					data={'type':"2",'ip':message_list[0]};
+
+					$.post($(this).attr('action'), data, function(data,status,xhr){								
+						if(status=="success"){
+							window.location.reload();
+						}
+					});
+				}
+				
+			<!--添加用户表单-->
+			</script>                         
+            <div class="modal-body form-horizontal">                        	
+                <div class="form-group">
+                    <label for="username" class="col-sm-2 control-label">ip:</label>
+                    <div class="col-sm-10">
+                    	<input type="text" class="form-control" id="input-ip" placeholder="ip地址">
+                     </div>
+                </div>                                                                                       
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="add-name" id="add-id"></input>
+                <button class="btn btn-default" data-dismiss="modal" type="button">关闭</button>
+                <input class="btn btn-primary" type="submit" name="addButton" value="确定"></input>
+            </div>                        	   
+		</div>
+	</div>
+</div>
+
+
+<script src="{% static "js/Chart.min.js" %}"></script>
+<script>
+	var cpu_ctx = $("#cpuChart").get(0).getContext("2d");
+	var cpuChart = new Chart(cpu_ctx);
+	var cpu_options = {
+		animation: false,
+		pointDotRadius: 2,
+		scaleLabel: "<%=value%> %",
+		scaleOverride: true,
+		scaleSteps: 10,
+		scaleStepWidth: 10,
+		scaleStartValue: 0,
+		responsive: true
+	};
+
+	var mem_ctx = $("#memoryChart").get(0).getContext("2d");
+	var memChart = new Chart(mem_ctx);
+	var mem_options = {
+		animation: false,
+		pointDotRadius: 2,
+		scaleLabel: "<%=value%> %",
+		responsive: true
+	};
+
+	function hostusage() {
+		  $.getJSON("{% url 'server-cpumem' %}",function(data){	
+			cpuChart.Line(data['cpu'], cpu_options);
+			memChart.Line(data['memory'], mem_options);
+		});
+		
+	}
+	//paint function
+	$(function () {		
+		window.setInterval('hostusage()', {{time_refresh }});		
+	});
+	
+	var rows = {{ip_length}};
+	//var rows=0;
+	function get_ip_status(){
+		  $.getJSON("{% url 'get-status' %}",function(data){				
+			for(var i=0;i<rows;i++){
+				status=data['data']['status'][i];
+				document.getElementById (""+i).innerHTML=status;
+				var div = document.getElementById("div"+i); 
+				if(status=='Unknown'){				
+					div.setAttribute("class", "alert alert-danger"); 
+				}
+			}
+		});		
+	}
+	
+	$(function () {		
+		get_ip_status();
+	});
+	
+	function deleteip(ip){
+		//alert('delete:'+ip);
+			//var ip = document.getElementById('ip0').innerHTML;			
+			data={'type':"1",'ip': ip};
+			$.post($(this).attr('action'), data, function(data,status,xhr){										
+				if(status=="success"){																					
+					alert("删除成功");																																	
+				}
+				else{
+					alert("您当前网络环境不佳，请检查网络后重试");									
+				}
+			});			
+	}
+	$(document).on("click","#refresh",function(){
+		get_ip_status();
+    });
+</script>
+{%endblock%}

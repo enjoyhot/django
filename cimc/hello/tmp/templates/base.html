@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>运营管理中心</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="/static/css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/static/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/static/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- jQuery Version 1.11.0 -->
+    <script src="/static/js/jquery-1.11.0.js" ></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/static/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="/static/js/plugins/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/static/js/sb-admin-2.js"></script>
+    
+    <!-- DataTables JavaScript -->	
+    <script src="/static/js/plugins/dataTables/jquery.dataTables.js"></script>
+	
+    <script src="/static/js/plugins/dataTables/dataTables.bootstrap.js"></script>	
+	
+	<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-user').dataTable();
+    });
+    $(document).ready(function() {
+        $('#dataTables-user-history').dataTable();
+    });	
+    $(document).ready(function() {
+        $('#dataTables-company').dataTable();
+    });
+    $(document).ready(function() {
+        $('#dataTables-userid-bind').dataTable();
+    });	
+    $(document).ready(function() {
+        $('#dataTables-company-history').dataTable();
+    });
+    $(document).ready(function() {
+        $('#dataTables-person-history').dataTable();
+    });	
+    $(document).ready(function() {
+        $('#dataTables-midware').dataTable();
+    });	
+    $(document).ready(function() {
+        $('#dataTables-midware-history').dataTable();
+    });			
+    </script>	
+	  
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"><font size="+2" color="#6699FF" style="margin-left:30px">运营管理中心</font></a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                 <li class="dropdown">
+                
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                        <span class="label label-warning">3</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                    	<li class="header"><font color="#000000" size="+2" style="margin-left:20px">系统消息：</font></li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>设备厂商一</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>5 min ago</em>
+                                    </span>
+                                </div>
+                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>设备厂商二</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>6 min ago</em>
+                                    </span>
+                                </div>
+                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>设备厂商三</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>7 min ago</em>
+                                    </span>
+                                </div>
+                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>查看全部</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-messages -->
+                </li>
+                <!-- /.dropdown -->
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                        <span class="label label-warning">5</span>                        
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                    	<li class="header"><font color="#000000" size="+2" style="margin-left:20px">业务消息：</font></li>
+                        <li class="divider"></li>                    
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-comment fa-fw"></i> New Comment
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                    <span class="pull-right text-muted small">12 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-tasks fa-fw"></i> New Task
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>查看全部</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-alerts -->
+                </li>
+                <!-- /.dropdown -->
+                
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> 用户概况</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="logout"><i class="fa fa-sign-out fa-fw"></i> 退出登录</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+                
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                            <!-- /input-group -->
+                            
+                        </li>
+                        {%block index-wrench%}  
+                        <li>
+                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>系统监控</a>
+                        </li>
+						{%endblock%}  
+                        
+                        
+                        <!--审核展开-->  
+                        {%block review-wrench%}  
+                      	 
+                        <li>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> 审核业务<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="user-review.html">用户审核业务</a>
+                                </li>
+                                <li>
+                                    <a href="device-review.html">设备审核业务</a>                                  
+                                </li>
+                                <li>
+                                    <a href="middleware-review.html">中间件审核业务</a>
+                                </li>
+
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        
+                        {%endblock%}
+                        
+                        {%block midware-wrench%}  
+                        <li>
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> 中间件业务<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="#">中间件测试部署</a>
+                                </li>
+                                <li>
+                                    <a href="#">中间件测试验收</a>
+                                </li>
+                                <li>
+                                    <a href="#">中间件入库上线</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>                       
+						{%endblock%}  
+
+                        {%block kvm-wrench%}    
+                        <li>
+                            <a href="kvm-manage.html"><i class="fa fa-table fa-fw"></i> KVM管理</a>
+                        </li>              
+						{%endblock%}  
+                        
+                        {%block server-wrench%}  
+                        <li>
+                            <a href="server-info.html"><i class="fa fa-edit fa-fw"></i>服务器信息概要</a>
+                        </li>                         
+						{%endblock%}  
+                        
+						{%block mongo-wrench%}                
+                        <li>
+                            <a href="http://218.17.246.235/rockmongo/index.php" target="view_window"><i class="fa fa-files-o fa-fw"></i> 数据库可视化管理</a>
+                        </li> 
+						{%endblock%}                          
+                                                                       
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">                
+
+        
+        
+			<!--审核业务-->  
+       		{%block review%}  
+              
+        	{%endblock%}           
+            
+            
+			<!--审核日志-->  
+       		{%block review-log%}  
+              
+        	{%endblock%} 
+
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+
+</body>
+
+</html>

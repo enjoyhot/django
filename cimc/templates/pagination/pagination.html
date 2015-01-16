@@ -1,0 +1,71 @@
+<!--{% if is_paginated %}
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{{ getvars }}{{ hashtag }}" class="prev">&lsaquo;&lsaquo; 上一页</a>
+    {% else %}
+        <span class="disabled prev">&lsaquo;&lsaquo; 上一页</span>
+    {% endif %}
+    {% for page in pages %}
+        {% if page %}
+            {% ifequal page page_obj.number %}
+                <span class="current page">{{ page }}</span>
+            {% else %}
+                <a href="?page={{ page }}{{ getvars }}{{ hashtag }}" class="page">{{ page }}</a>
+            {% endifequal %}
+        {% else %}
+            ...
+        {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{{ getvars }}{{ hashtag }}" class="next">下一页 &rsaquo;&rsaquo;</a>
+    {% else %}
+        <span class="disabled next">下一页 &rsaquo;&rsaquo;</span>
+    {% endif %}
+    <span> 共 {{ page_obj.paginator.num_pages }} 页 </span>
+    <span>
+    <form action="user-review.html." method="get">
+    	<span>到第</span>
+        <span><input name="page" type="text" ></span>
+        <span> 页 </span>
+        <span><input type="submit" value=" 跳转 "></span>
+    </form>
+    </span>
+</div>
+{% endif %}
+-->
+
+{% if is_paginated %}
+{% load i18n %}
+<ul class="pagination">
+
+  {% block previouslink %}
+  {% if page_obj.has_previous %}
+  <li><a href="?page{{ page_suffix }}={{ page_obj.previous_page_number }}{{ getvars }}" class="prev">{{ previous_link_decorator|safe }}上一页</a></li>
+  {% else %}
+  		<li class="paginate_button previous disabled"><span class="disabled prev">{{ previous_link_decorator|safe }}上一页</span></li>
+  {% endif %}
+  {% endblock previouslink %}
+  
+  {% block pagelinks %}  
+  {% for page in pages %}
+  {% if page %}
+  {% ifequal page page_obj.number %}
+  <li class="active"><span class="current page">{{ page }}</span></li>
+  {% else %}
+  <li><a href="?page{{ page_suffix }}={{ page }}{{ getvars }}" class="page">{{ page }}</a></li>
+  {% endifequal %}
+  {% else %}
+  		<li>...</li>
+  {% endif %}
+  {% endfor %}
+  {% endblock pagelinks %}
+  
+  {% block nextlink %}
+  {% if page_obj.has_next %}
+  <li><a href="?page{{ page_suffix }}={{ page_obj.next_page_number }}{{ getvars }}" class="next">下一页{{ next_link_decorator|safe }}</a></li>
+  {% else %}
+   		<li class="paginate_button next disabled"><span class="disabled next">下一页{{ next_link_decorator|safe }}</span><li>
+  {% endif %}
+  {% endblock nextlink %}
+</ul>
+{% endif %}  
