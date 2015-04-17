@@ -9,6 +9,7 @@ from servers.forms import ComputeAddTcpForm, ComputeAddSshForm, ComputeEditHostF
 from vrtManager.hostdetails import wvmHostDetails
 from vrtManager.connection import CONN_SSH, CONN_TCP, CONN_TLS, CONN_SOCKET, connection_manager
 from libvirt import libvirtError
+from hello.solve_req import custom_proc
 
 
 def index(request):
@@ -118,7 +119,7 @@ def servers_list(request):
                 new_socket_host.save()
                 return HttpResponseRedirect(request.get_full_path())
 
-    return render_to_response('servers.html', locals(), context_instance=RequestContext(request))
+    return render_to_response('servers.html', locals(), context_instance=RequestContext(request,processors=[custom_proc]))
     #return render_to_response('servers.html', {})
 
 

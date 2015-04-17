@@ -132,7 +132,7 @@
                             <td>001</td>
                             </tr>
                             -->
-                            {% for u in device %}
+                            {% for u in device.object_list %}
                             <tr id={{forloop.counter0}}>
                                 <td><input type="checkbox" name="transPro" value={{forloop.counter0}}></td>
                                 {% for item in u %}
@@ -148,6 +148,11 @@
 						{% endif %}
 					</table>
 				</div>
+                
+                <div>       
+					{%  include "pages/device.html" %}
+                </div>                 
+                
 			</div>
 			<div class="panel-footer">                                                                                    
 				<script type="text/javascript">
@@ -392,7 +397,7 @@
                             <td>001</td>  {{ forloop.parentloop.counter }}                                          
                             </tr>
                             -->
-                        {% for u in device_bind %}
+                        {% for u in device_bind.object_list %}
                         <tr id={{forloop.counter0}}>
                             <td><input type="checkbox" name="transPro2" value={{forloop.counter0}}{{forloop.counter0}}></td>
                             {% for item in u %}
@@ -410,6 +415,11 @@
 						{% endif %}
 					</table>
 				</div>
+                
+                <div>       
+					{%  include "pages/device_bind.html" %}
+                </div>                 
+                
 			</div>
             <div class="panel-footer">                                                                                    
 				<script type="text/javascript">
@@ -687,7 +697,7 @@
                             <td>审核未通过</td>                                                  
                             </tr>
                             -->
-                            {% for u in device_review %}
+                            {% for u in device_review.object_list %}
                             <tr id={{forloop.counter0}}>
                             <td><input type="checkbox" name="transPro3" value={{forloop.counter0}}{{forloop.counter0}}{{forloop.counter0}}></td>
                             {% for item in u %}
@@ -704,6 +714,11 @@
                         {% endif %}
                     </table>
                 </div>
+                
+                <div>       
+					{%  include "pages/device_review.html" %}
+                </div>                 
+                
             </div>
             <div class="panel-footer">                                                                                    
                 <script type="text/javascript">
@@ -874,7 +889,7 @@
                             <td>审核未通过</td>                                                  
                             </tr>
                             -->
-                            {% for u in bind_review %}
+                            {% for u in bind_review.object_list %}
                             <tr id={{forloop.counter0}}>
                             <td><input type="checkbox" name="transPro4" value={{forloop.counter0}}{{forloop.counter0}}{{forloop.counter0}}{{forloop.counter0}}></td>
                             {% for item in u %}
@@ -895,6 +910,11 @@
                         {% endif %}
                     </table>
                 </div>
+                
+                <div>       
+					{%  include "pages/bind_review.html" %}
+                </div>                 
+                
             </div>
             <div class="panel-footer">                                                                                    
                 <script type="text/javascript">

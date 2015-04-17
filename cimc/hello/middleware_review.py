@@ -12,6 +12,7 @@ import time
 import hashlib
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+from hello.paging import get_page_msg
 
 @login_required
 @csrf_exempt
@@ -21,9 +22,10 @@ def middleware_review(req):
 	cimc_midware_req(req)
 
 	midware=[]
+	midware_test=[]
 	midware_review=[]
 	for i in cimc_midware.objects.order_by("-uploadtime"):
-		if i['status']==0:
+		if i['status']==0 or i['status']==1:
 			item=[]
 			useritem=cimc_user.objects(userid=int(float(i['userid']))).first()
 			item.append(useritem['username'])
@@ -33,7 +35,10 @@ def middleware_review(req):
 			uploadtime=float(i['uploadtime'])
 			item.append(transfer_time(uploadtime))
 			item.append(i['midwareid'])
-			midware.append(item)
+			if i['status']==0:
+				midware.append(item)
+			else:
+				midware_test.append(item)
 		else:
 			item=[]
 			useritem=cimc_user.objects(userid=int(float(i['userid']))).first()
@@ -50,26 +55,17 @@ def middleware_review(req):
 			item.append(i['midwareid'])
 			midware_review.append(item)
 	limit=10
-	page_midware=Paginator(midware,limit)
-	page_midware_review=Paginator(midware_review,limit)
-	page=req.GET.get('page')
-	table=req.GET.get('table','none')
-	try:
-		if table=='1':
-			midware=page_midware.page(page)
-		else:
-			midware=page_midware.page(1)
-	except PageNotAnInteger:
-		midware=page_midware.page(1)
-	except EmptyPage:
-		midware=page_midware.page(page_midware.num_pages)
-	try:
-		if table=='2':
-			midware_review=page_midware_review.page(page)
-		else:
-			midware_review=page_midware_review.page(1)
-	except PageNotAnInteger:
-		midware_review=page_midware_review.page(1)
-	except EmptyPage:
-		midware_review=page_midware_review.page(page_midware_review.num_pages)
-	return render_to_response('middleware-review.html',{'midware':midware,'midware_review':midware_review},context_instance=RequestContext(req))
+
+	page=req.GET.get('page','')
+	if page == '':
+		page = 1
+	table=req.GET.get('table','')
+	if table == '':
+		table = 1
+	selectItemList=[midware,midware_review,midware_test]
+	index=int(table)-1
+	count=len(selectItemList)
+	
+	resultItem,p_pages=get_page_msg(limit,selectItemList,index,count,page)
+
+	return render_to_response('middleware-review.html',{'midware':resultItem[0],'p_pages_midware':p_pages[0],'midware_test':resultItem[2],'p_pages_midware_test':p_pages[2],'midware_review':resultItem[1],'p_pages_midware_review':p_pages[1]},context_instance=RequestContext(req,processors=[custom_proc]))

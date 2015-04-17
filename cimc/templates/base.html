@@ -72,45 +72,35 @@
     
     <script src="{% static "js/jquery.tablesorter.js" %}"></script>        
     
-    <script src="{% static "js/bootstrap-paginator.js" %}"></script>         
+<!--    <script src="{% static "js/bootstrap-paginator.js" %}"></script> -->        
 	
 	<!-- Page-Level Demo Scripts - Tables - Use for reference -->
-    <script>
-//    $(document).ready(function() {
-//        $('#dataTables-user').dataTable();
-//    });
-//    $(document).ready(function() {
-//        $('#dataTables-user-history').dataTable();
-//    });	
-//    $(document).ready(function() {
-//        $('#dataTables-company').dataTable();
-//    });
-//    $(document).ready(function() {
-//        $('#dataTables-userid-bind').dataTable();
-//    });	
-//    $(document).ready(function() {
-//        $('#dataTables-company-history').dataTable();
-//    });
-//    $(document).ready(function() {
-//        $('#dataTables-person-history').dataTable();
-//    });	
-//    $(document).ready(function() {
-//        $('#dataTables-midware').dataTable();
-//    });	
-//    $(document).ready(function() {
-//        $('#dataTables-midware-history').dataTable();
-//    });			
-    </script>	
-	  
+	<STYLE  type="text/css">				
+		.sidebar-menu {    
+			padding-top: 15px;
+			padding-bottom: 2px;
+			background-color: #0828A7;		
+		}
+		.top-title {			
+			height:100px;		
+		}	
+		.top-title a:hover {
+			text-decoration:none;
+		}
+	</STYLE>
 </head>
 
 <body>
 
     <div id="wrapper">
 
+		<br>
+		<div class="top-title">	
+			<a href="index.html"><font size="+5" color="#6699FF" style="margin-left:50px">CIMC运营管理中心</font></a>
+		</div>
         <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">		
+            <!--<div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
@@ -119,6 +109,7 @@
                 </button>
                 <a class="navbar-brand" href="index.html"><font size="+2" color="#6699FF" style="margin-left:30px">运营管理中心</font></a>
             </div>
+			-->
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
@@ -248,7 +239,7 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> 用户概况</a>
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> 用户:<span> </span><font color="red">{{ admin_name }}</font></a>
                         </li>
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a>
                         </li>
@@ -262,13 +253,14 @@
                 
             </ul>
             <!-- /.navbar-top-links -->
-
+			
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-<!--                        <li class="sidebar-search">
-                            
-                        </li>-->
+						<li class="sidebar-menu" align="center">
+                            <font style="font-weight:bold" size="5" color="white">功 能 菜 单</font><br>
+							<font size="4" color="white">Functional menu</font>
+                        </li>
                         {%block index-wrench%}  
                         <li>
                             <a href="{% url 'index' %}"><i class="fa fa-dashboard fa-fw"></i>系统监控</a>

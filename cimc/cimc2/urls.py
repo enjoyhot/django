@@ -10,7 +10,8 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'cimc2.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-
+    
+    # django management background, not used
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^cimc/logout','hello.views.cimc_logout',name='cimc-logout'),
@@ -19,6 +20,8 @@ urlpatterns = patterns('',
     url(r'^cimc/user-review.html','hello.views.user_review',name='user-review'),
     url(r'^cimc/device-review.html$','hello.views.device_review',name='device-review'),
     url(r'^cimc/middleware-review.html$','hello.views.middleware_review',name='middleware-review'),
+
+    # kvm manager
     url(r'^cimc/kvm-manage.html$','hello.views.kvm_manage',name='kvm-manage'),
     url(r'^cimc/server-info.html$', 'hello.views.server_info',name='server-info'),
     url(r'^cimc/servers','servers.views.servers_list',name='servers_list'),
@@ -40,8 +43,12 @@ urlpatterns = patterns('',
     url(r'^cimc/info/instusage/(\d+)/([\w\-\.]+)/$', 'instance.views.instusage', name='instusage'),
     url(r'^cimc/console/$', 'console.views.console', name='console'),
     url(r'^infrastructure/$', 'servers.views.infrastructure', name='infrastructure'),
+ 
 )
 #urlpatterns += patterns(
 #    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
 #)
+urlpatterns += patterns('', 
+    (r'^i18n/', include('django.conf.urls.i18n')), 
+ )
 #urlpatterns += staticfiles_urlpatterns()

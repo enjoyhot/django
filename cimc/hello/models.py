@@ -2,8 +2,11 @@ from django.db import models
 from mongoengine import *
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
+from cimc2.settings import DBname,DBhost,DBusername,DBpassword
 import time
-connect('cimc',host='127.0.0.1')
+#connect(DBname,host=DBhost,username=DBusername,password=DBpassword)
+connect(DBname,host=DBhost)
+#connect('cimc',host='127.0.0.1',username='cimc',password='lab501')
 
 # Create your models here.
 class cimc_message(Document):

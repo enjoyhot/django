@@ -11,7 +11,8 @@ from django.http import HttpResponse
 import time
 import hashlib
 from django.contrib.auth.decorators import login_required
+from cimc2.settings import admin_name
 
 @login_required
 def index(req):
-	return render_to_response('index.html',{})
+	return render_to_response('index.html',{},context_instance=RequestContext(req,processors=[custom_proc]))

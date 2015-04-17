@@ -54,7 +54,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'pagination',
     'hello',
     'servers',
     'instance',
@@ -107,13 +106,8 @@ QEMU_KEYMAPS = ['ar', 'da', 'de', 'de-ch', 'en-gb', 'en-us', 'es', 'et', 'fi',
 #)
 
 TEMPLATE_CONTEXT_PROCESSORS=(
-    #'django.core.auth.context_processors.auth',
     'django.contrib.auth.context_processors.auth',
-    #'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
-    #'django.core.context_processors.media',
-    #'django.core.context_processors.static',
-    #'django.core.context_processors.request',
 )
 
 #MONGOENGINE_USER_DOCUMENT='mongoengine.django.auth.User'
@@ -128,9 +122,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'pagination.middleware.PaginationMiddleware',
 )
-
+admin_name = 'Administrator'
 AUTHENTICATION_BACKENDS=(
     'mongoengine.django.auth.MongoEngineBackend',
 )
@@ -142,6 +135,24 @@ WSGI_APPLICATION = 'cimc2.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+
+
+
+# connect messages of mongodb
+DBname = 'cimc'
+DBhost = '127.0.0.1'
+DBusername = 'gugugujiawei'
+DBpassword = '215916459264'
+
+# midware dir path
+route_from = 'home/gugugujiawei/DjangoServer/cimc/'
+#route_from = '/home/wwwroot/default/cimc/Public/Uploads/'
+route_to = '/home/DjangoServer/tmp/'
+#route_to = '/home/midwaretmp/'
+remotepasswd='ssc@Lab*501'
+remoteuser = 'root'
+remotehost = '218.17.246.235'
+remoteport = '13231'
 
 DATABASES = {
   #  'default': {
@@ -202,3 +213,60 @@ TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates'),)
 
 LOGIN_URL='/cimc/login'
 #STATIC_ROOT='/home/gugugujiawei/DjangoServer/cimc2/hello/static/'
+
+DATABASES = {
+  #  'default': {
+ #       'ENGINE': 'django.db.backends.dummy',
+  #      'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(os.path.dirname(__file__), '..', 'webvirtmgr.sqlite3'),
+        # The following settings are not used with sqlite3:
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',  # Set to empty string for default.
+    }
+}
+
+# Internationalization
+# https://docs.djangoproject.com/en/1.7/topics/i18n/
+
+LANGUAGE_CODE = 'en-us'
+
+#TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
+
+LOCALE_PATHS = (
+    os.path.join(os.path.dirname(__file__), '..', 'locale'),
+)
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
+
+MIDIA_ROOT=os.path.join(BASE_DIR,'media')
+
+MIDIA_URL='/media/'
+
+#from mongoengine import connect
+#connect('cimc_user')
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.7/howto/static-files/
+#INSTALLED_APPS += [django.contrib.staticfiles,]
+#STATICFILES_FINDERS=(
+#	'django.contrib.staticfiles.finders.FileSystemFinder',
+#	'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#)
+
+STATICFILES_DIRS = (
+	 os.path.join(os.path.dirname(__file__),'static'),
+)
+
+from hello.authentication import register
+register()
+

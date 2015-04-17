@@ -4,6 +4,14 @@ import pymongo
 from django.http import HttpResponse
 import time
 import hashlib
+import pexpect,thread,os
+from cimc2.settings import route_from,route_to,remotepasswd,remoteuser,remotehost,remoteport
+
+def custom_proc(req):
+        "a context processor that provide something for base.html"
+        admin_name = req.user['username']
+        return {'admin_name':admin_name}
+
 def transfer_time(timestamp):
 	time_array=time.localtime(timestamp)
 	result_time=time.strftime("%Y-%m-%d %H:%M:%S",time_array)
@@ -78,12 +86,20 @@ def cimc_user_req(req):
 				cimc_user_update(int(float(item)),1)
 def cimc_midware_req(req):
 	if req.method=='POST'and not req.is_ajax():
-		pass_con=req.POST.get('content','')
-		notpass_con=req.POST.get('content2','')	
+		#review_midware
+		pass_review_con=req.POST.get('content','')
+		notpass_review_con=req.POST.get('content2','')	
+		
+		#test file
+		pass_test_con=req.POST.get('content4','')
+		notpass_test_con=req.POST.get('content5','')	
+
+		#recover
 		recover_con=req.POST.get('content3','')	
-		#collection.update({'userid':1},{'$set':{'status':str(content)}})
-		if pass_con != '':
-			value=pass_con.split(',')
+
+		# review the midware users
+		if pass_review_con != '':
+			value=pass_review_con.split(',')
 			for item in value:
 				user_id=''
 				for user_item in cimc_midware.objects(midwareid=int(float(item))):
@@ -94,8 +110,8 @@ def cimc_midware_req(req):
 				cimc_message_update(**msg)
 				#change the status of cimc_user after review
 				cimc_midware_update(user_id,1)
-		elif notpass_con != '':
-			value=notpass_con.split(',')
+		elif notpass_review_con != '':
+			value=notpass_review_con.split(',')
 			for item in value:
 				user_id=''
 				user_item=cimc_midware.objects(midwareid=int(float(item))).first()
@@ -104,6 +120,33 @@ def cimc_midware_req(req):
 				msg={'msg_from':'admin','to':user_id,'msg_type':'4','time':int(time.time()),'status':0,'result':0,'midwareid':int(float(item))}
 				cimc_message_update(**msg)
 				cimc_midware_update(user_id,-1)
+
+		#test the midware files
+		elif pass_test_con != '':
+			value=pass_test_con.split(',')
+			for item in value:
+				user_id=''
+				for user_item in cimc_midware.objects(midwareid=int(float(item))):
+					user_id=user_item['userid']
+
+				#change the status of cimc_user after review
+				cimc_midware_update(user_id,2)
+
+				#start a thread to move file
+
+				user_item=cimc_midware.objects(midwareid=int(float(item))).first()
+				route_from=user_item.path
+				thread.start_new_thread(scp_to,(route_from,remoteuser,remotehost,route_to,remotepasswd))
+
+		elif notpass_test_con != '':
+			value=notpass_con.split(',')
+			for item in value:
+				user_id=''
+				user_item=cimc_midware.objects(midwareid=int(float(item))).first()
+				user_id=user_item.userid
+				#number_item=cimc_device.objects(deviceid=int(float(serial_deviceid)),level=3).first()
+				cimc_midware_update(user_id,-1)
+		#revover
 		elif recover_con != '':
 			value=recover_con.split(',')
 			for item in value:
@@ -132,7 +175,8 @@ def cimc_midware_req(req):
 			f=req.FILES['docfile']
 			name=f.name
 			filesize=f.size	
-			path='/home/gugugujiawei/DjangoServer/cimc2/'+str(f.name)
+			#path='/home/gugugujiawei/DjangoServer/cimc/'+value[2]+'.cgi'
+			path=route_from+value[2]+'.cgi'
 			md5=handle_uploaded_file(f,path,filesize)
 			i=cimc_midware.objects.order_by('-midwareid').first()
 			if i!=None:
@@ -154,6 +198,7 @@ def cimc_midware_req(req):
 				midwareid=midwareid
 				)
 			newmidware.insert()
+# handle upload file
 def handle_uploaded_file(f,path,size):
 	with open(path,'wb+') as destination:
 		for chunk in f.chunks():
@@ -171,8 +216,24 @@ def handle_uploaded_file(f,path,size):
 			md5obj=hashlib.md5()
 			md5obj.update(f.read())
 			md5=md5obj.hexdigest()
-		return md5
+		return str(md5)
 		destination.close()
+
+# move midware file to remote server
+def scp_to(route_from,user,host,route_to,password):  
+    cmd = "scp -P %s %s %s@%s:%s"%(remoteport,route_from,user,host,route_to)  
+    print cmd  
+    scp = pexpect.spawn(cmd)  
+    try:  
+        i = scp.expect(['password:',pexpect.EOF],timeout=60)  
+        if i == 0:  
+            scp.sendline(password)  
+            j = scp.expect(['password:',pexpect.EOF],timeout=60)  
+            if j == 0:  
+                print "password wrong for %s for %s"%(user,host)
+    except:  
+        print 'error'
+    scp.close() 
 
 def cimc_device_req(req):
 	if req.is_ajax():
@@ -198,7 +259,10 @@ def cimc_device_req(req):
 			deviceid_level1=''
 			deviceid_level2=''
 			ii=cimc_device.objects(level=1).order_by('-deviceid').first()
-			deviceid_level1=ii.deviceid+1
+			if ii!=None:
+				deviceid_level1=ii.deviceid+1
+			else:
+				deviceid_level1=1
 			ii=cimc_device.objects(level=2).order_by('-deviceid').first()
 			if ii!=None:
 				deviceid_level2=ii.deviceid+1
@@ -219,7 +283,10 @@ def cimc_device_req(req):
 				message_level1.insert()
 			pid1='pid'
 			ii=cimc_device.objects(level=1,userid=int(float(rec_userid))).first()
-			pid1=ii.deviceid
+			if ii == None:
+				pid1=1
+			else:
+				pid1=ii.deviceid
 			message_level2=cimc_device(
 				level=2,
 				devicetype=devicetype,

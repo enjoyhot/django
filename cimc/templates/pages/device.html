@@ -1,22 +1,36 @@
-<ul class="pagination">
+
+<ul style="float:left">
+    共 <span>{{ device.paginator.count }}</span> 条任务，总 <span>{{ device.paginator.num_pages }}</span> 页
+</ul>
+<ul class="pagination" style="float:right">
 {% if device.has_previous %}
     <li><a href="?table=1&&page={{ device.previous_page_number }}" class="prev">{{ previous_link_decorator|safe }}上一页</a></li>
 {% else %}
     <li class="paginate_button previous disabled"><span class="disabled prev">{{ previous_link_decorator|safe }}上一页</span></li>
 {% endif %}
 
-{% for page in device.paginator.page_range %}
-{% if page %}
-{% ifequal page device.number %}
-<li class="active"><span class="current page">{{ page }}</span></li>
+{% if device.has_previous %}
+    <li><a href="?table=1&&page=1" class="prev">{{ previous_link_decorator|safe }}首页</a></li>
 {% else %}
-<li><a href="?table=1&&page{{ page_suffix }}={{ page }}{{ getvars }}" class="page">{{ page }}</a></li>
-{% endifequal %}
-{% else %}
-      <li>...</li>
+    <li class="paginate_button previous disabled"><span class="disabled prev">{{ previous_link_decorator|safe }}首页</span></li>
 {% endif %}
+
+{% for page in p_pages_device %}
+    {% if page %}
+        {% ifequal page device.number %}
+            <li class="active"><span class="current page">{{ page }}</span></li>
+            {% else %}
+            <li><a href="?table=1&&page{{ page_suffix }}={{ page }}{{ getvars }}" class="page">{{ page }}</a></li>
+        {% endifequal %}
+    {% endif %}
 {% endfor %}
-  
+
+{% if device.has_next %}  
+	<li><a href="?table=1&&page={{ device.paginator.num_pages }}" class="next">末页{{ next_link_decorator|safe }}</a></li> 
+{% else %}
+        <li class="paginate_button next disabled"><span class="disabled next">末页{{ next_link_decorator|safe }}</span></li>
+{% endif %}
+
 {% if device.has_next %}
         <li><a href="?table=1&&page={{ device.next_page_number }}" class="next">下一页{{ next_link_decorator|safe }}</a></li>
 {% else %}

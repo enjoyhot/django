@@ -18,5 +18,5 @@ import time
 import hashlib
 
 def kvm_manage(req):
-	return render_to_response('kvm-manage.html',{})
+	return render_to_response('kvm-manage.html',{},context_instance=RequestContext(req,processors=[custom_proc]))
 

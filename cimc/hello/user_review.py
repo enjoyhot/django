@@ -13,6 +13,7 @@ import time
 import hashlib
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+from hello.paging import get_page_msg
 
 @login_required
 @csrf_exempt
@@ -58,26 +59,17 @@ def user_review(req):
 				item.append('审核未通过')
 			user_review.append(item)
 	limit=10
-	page_user=Paginator(user,limit)
-	page_user_review=Paginator(user_review,limit)
-	page=req.GET.get('page')
-	table=req.GET.get('table','none')
-	try:
-		if table=='1':
-			user=page_user.page(page)
-		else:
-			user=page_user.page(1)
-	except PageNotAnInteger:
-		user=page_user.page(1)
-	except EmptyPage:
-		user=page_user.page(page_user.num_pages)
-	try:
-		if table=='2':
-			user_review=page_user_review.page(page)
-		else:
-			user_review=page_user_review.page(1)
-	except PageNotAnInteger:
-		user_review=page_user_review.page(1)
-	except EmptyPage:
-		user_review=page_user_review.page(page_user_review.num_pages)
-	return render_to_response('user-review.html',{'user':user,'user_review':user_review},context_instance=RequestContext(req))
+
+	page=req.GET.get('page','')
+	if page == '':
+		page = 1
+	table=req.GET.get('table','')
+	if table == '':
+		table = 1
+	selectItemList=[user,user_review]
+	index=int(table)-1
+	count=len(selectItemList)
+	
+	resultItem,p_pages=get_page_msg(limit,selectItemList,index,count,page)
+	# custom_proc function is for global variable
+	return render_to_response('user-review.html',{'user':resultItem[0],'p_pages_user':p_pages[0],'user_review':resultItem[1],'p_pages_user_review':p_pages[1]},context_instance=RequestContext(req,processors=[custom_proc]))
